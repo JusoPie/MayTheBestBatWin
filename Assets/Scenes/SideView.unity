@@ -141,8 +141,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  currentHealth: 0
   respawnDelay: 5
-  pushBackForce: 10
+  pushBackForce: 1.5
+  pushbackEffect: 0.5
 --- !u!1 &101000922 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2467446479825728740, guid: b8d9f2851c1f5184f9b5c3dc4c973749, type: 3}
@@ -161,8 +163,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  currentHealth: 0
   respawnDelay: 5
-  pushBackForce: 10
+  pushBackForce: 1.5
+  pushbackEffect: 0.5
 --- !u!1 &158234546
 GameObject:
   m_ObjectHideFlags: 0
@@ -563,7 +567,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d6936de30866494e85ecc0a06d78df8, type: 3}
   m_Name: 

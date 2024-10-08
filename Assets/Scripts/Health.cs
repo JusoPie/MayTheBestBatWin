@@ -4,11 +4,12 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     public int maxHealth = 100;
-    private int currentHealth;
+    [SerializeField] private int currentHealth;
     private Animator animator;
 
     [SerializeField] private float respawnDelay = 3f; // Delay before respawn
     [SerializeField] private float pushBackForce = 5f; // Amount of force applied when hit
+    [SerializeField] private float pushbackEffect = 1f; //Time to wait before enabling canMove after damage
 
     private Vector3 initialPosition; // Store the initial position for respawn
     private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer for transparency
@@ -31,16 +32,21 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(int damage, Vector2 damageSourcePosition)
     {
+        Debug.Log("damage");
         currentHealth -= damage;
-        animator.SetTrigger("Damage"); // Play damage animation
+        playerMovement.enabled = false;
+        animator.SetTrigger("Damage");
+        StartCoroutine(KnockbackTimer());
 
         // Apply pushback force
         ApplyPushback(damageSourcePosition);
 
         if (currentHealth <= 0)
         {
+            Debug.Log("kuolin");
             Die();
         }
+
     }
 
     private void ApplyPushback(Vector2 damageSourcePosition)
@@ -64,6 +70,13 @@ public class Health : MonoBehaviour
         StartCoroutine(RespawnAfterDelay());
     }
 
+    private IEnumerator KnockbackTimer() 
+    {
+        yield return new WaitForSeconds(pushbackEffect);
+
+        playerMovement.enabled = true;
+    }
+
     private IEnumerator RespawnAfterDelay()
     {
         yield return new WaitForSeconds(respawnDelay);
@@ -77,6 +90,9 @@ public class Health : MonoBehaviour
 
         // Re-enable player movement
         playerMovement.enabled = true;
+        Debug.Log("PM enabled");
+
+        rb.velocity = Vector2.zero;
     }
 
     private void SetSpriteTransparency(float alpha)
