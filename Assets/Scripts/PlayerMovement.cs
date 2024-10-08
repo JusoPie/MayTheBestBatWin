@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask enemyLayer; // Layer mask for enemies
 
     private bool canAttack = true; // Track if the player can attack
+    public bool isDead = false;
 
     private void Start()
     {
@@ -93,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Attack(InputAction.CallbackContext context)
     {
-        if (context.performed && canAttack) // Only attack if cooldown has passed
+        if (context.performed && canAttack && !isDead) // Only attack if cooldown has passed or is not dead
         {
             canAttack = false; // Prevent further attacks until cooldown finishes
             canMove = false;
@@ -140,6 +141,8 @@ public class PlayerMovement : MonoBehaviour
     {
         return Physics2D.OverlapCircle(_groundCheck.position, 0.2f, _groundLayer);
     }
+
+
 
     private void Flip()
     {
