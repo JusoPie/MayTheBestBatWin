@@ -17,6 +17,8 @@ public class Health : MonoBehaviour
     private Rigidbody2D rb; // Reference to Rigidbody2D for applying pushback
     private Color originalColor; // Store original sprite color
 
+    private bool canTakeDamage = true;
+
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -27,25 +29,29 @@ public class Health : MonoBehaviour
         rb = GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component
 
         originalColor = spriteRenderer.color; // Save the original color of the sprite
-        initialPosition = transform.position; // Save the initial position
+        //initialPosition = transform.position; // Save the initial position
     }
 
     public void TakeDamage(int damage, Vector2 damageSourcePosition)
     {
-        Debug.Log("damage");
-        currentHealth -= damage;
-        playerMovement.enabled = false;
-        animator.SetTrigger("Damage");
-        StartCoroutine(KnockbackTimer());
-
-        // Apply pushback force
-        ApplyPushback(damageSourcePosition);
-
-        if (currentHealth <= 0)
+        if (canTakeDamage) 
         {
-            Debug.Log("kuolin");
-            Die();
+            Debug.Log("damage");
+            currentHealth -= damage;
+            playerMovement.enabled = false;
+            animator.SetTrigger("Damage");
+            StartCoroutine(KnockbackTimer());
+
+            // Apply pushback force
+            ApplyPushback(damageSourcePosition);
+
+            if (currentHealth <= 0)
+            {
+                Debug.Log("kuolin");
+                Die();
+            }
         }
+        
 
     }
 
@@ -62,12 +68,17 @@ public class Health : MonoBehaviour
     {
         // Disable player movement
         playerMovement.enabled = false;
+        playerMovement.isDead = true;
+        canTakeDamage = false;
 
         // Set the sprite to transparent to simulate disappearance
         SetSpriteTransparency(0.2f);
 
+
+
         // Start respawn process after a delay
         StartCoroutine(RespawnAfterDelay());
+
     }
 
     private IEnumerator KnockbackTimer() 
@@ -83,14 +94,17 @@ public class Health : MonoBehaviour
 
         // Reset health and position
         currentHealth = maxHealth;
-        transform.position = initialPosition; // Optional: Reset to initial position
+        //transform.position = initialPosition; // Optional: Reset to initial position
 
         // Restore the sprite's visibility
         SetSpriteTransparency(1f);
 
         // Re-enable player movement
         playerMovement.enabled = true;
+        playerMovement.isDead = false;
         Debug.Log("PM enabled");
+        canTakeDamage = true;
+
 
         rb.velocity = Vector2.zero;
     }
