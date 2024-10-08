@@ -29,7 +29,7 @@ public class Health : MonoBehaviour
         rb = GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component
 
         originalColor = spriteRenderer.color; // Save the original color of the sprite
-        initialPosition = transform.position; // Save the initial position
+        //initialPosition = transform.position; // Save the initial position
     }
 
     public void TakeDamage(int damage, Vector2 damageSourcePosition)
@@ -94,7 +94,7 @@ public class Health : MonoBehaviour
 
         // Reset health and position
         currentHealth = maxHealth;
-        transform.position = initialPosition; // Optional: Reset to initial position
+        //transform.position = initialPosition; // Optional: Reset to initial position
 
         // Restore the sprite's visibility
         SetSpriteTransparency(1f);
