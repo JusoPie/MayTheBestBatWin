@@ -9,10 +9,10 @@ public class GameManager : MonoBehaviour
 {
 
     public GameObject pauseMenuUI; // Assign the pause panel from the Unity Inspector
-    private bool isPaused = false;
     public static GameManager instance;
     public AudioSource backgroundMusic;
     public Slider volumeSlider;
+    private bool isPaused = false;
 
     // Start is called before the first frame update
 
@@ -44,8 +44,8 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (SceneManager.GetActiveScene().name != "MenuScene") // Replace "MenuScene" with your actual menu scene name
         {
-            // Check for pause input (e.g., Escape key or a button click)
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 if (isPaused)
