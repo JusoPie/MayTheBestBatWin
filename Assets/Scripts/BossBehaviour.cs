@@ -8,20 +8,21 @@ public class BossBehavior : MonoBehaviour
     [SerializeField] private float speed = 2f;
     [SerializeField] private float attackRange = 1.5f;  
     [SerializeField] private float secondAttackSpeed = 5f; 
-
     [SerializeField] private int health = 100;   
-    private SpriteRenderer spriteRenderer;  
 
+    private SpriteRenderer spriteRenderer;  
     private Transform targetPlayer;  // Current target player
     private Animator animator;
-    private bool isAttacking = false;
-    private Vector3 initialScale;
+    private bool isAttacking = false;  
+    private Vector3 initialScale;  // Store the initial scale of the boss
 
     private void Start()
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         targetPlayer = GetClosestPlayer();  // Initialize with closest player
+        
+        // Store the initial scale at the start
         initialScale = transform.localScale;
 
         animator.SetTrigger("Prepare");
@@ -38,12 +39,7 @@ public class BossBehavior : MonoBehaviour
         // Move towards the closest player if not attacking
         if (!isAttacking)
         {
-            animator.SetBool("isWalking", true);
             MoveTowardsTarget();
-        }
-        else 
-        {
-            animator.SetBool("isWalking", false);
         }
 
         // Check target player
@@ -53,8 +49,8 @@ public class BossBehavior : MonoBehaviour
             targetPlayer = closestPlayer;
         }
 
-        // Check for attack range
-        float distanceToTarget = Mathf.Abs(transform.position.x - targetPlayer.position.x);
+        // Check for attack range (using both X and Y distance)
+        float distanceToTarget = Vector2.Distance(transform.position, targetPlayer.position);
         if (distanceToTarget <= attackRange)
         {
             Attack();
@@ -73,22 +69,20 @@ public class BossBehavior : MonoBehaviour
     // Move the boss towards the target player
     private void MoveTowardsTarget()
     {
-        
+        // Flip only the X-axis based on the target player's position
         if (targetPlayer.position.x > transform.position.x)
         {
-            transform.localScale = new Vector3(initialScale.x, initialScale.y, initialScale.z);  
+            transform.localScale = new Vector3(initialScale.x, initialScale.y, initialScale.z);  // Face right
         }
         else
         {
-            transform.localScale = new Vector3(-initialScale.x, initialScale.y, initialScale.z); 
+            transform.localScale = new Vector3(-initialScale.x, initialScale.y, initialScale.z); // Face left (flip X)
         }
 
-        // Move towards the target player
-        transform.position = Vector2.MoveTowards(transform.position, new Vector2(targetPlayer.position.x, transform.position.y), speed * Time.deltaTime);
-        
+        // Move towards the target player in both X and Y axes
+        transform.position = Vector2.MoveTowards(transform.position, targetPlayer.position, speed * Time.deltaTime);
     }
 
-    
     private void Attack()
     {
         if (isAttacking) return;
@@ -102,12 +96,12 @@ public class BossBehavior : MonoBehaviour
     private void PerformSecondAttack()
     {
         // If still in range after the first attack, perform the second attack
-        float distanceToTarget = Mathf.Abs(transform.position.x - targetPlayer.position.x);
+        float distanceToTarget = Vector2.Distance(transform.position, targetPlayer.position);
         if (distanceToTarget <= attackRange)
         {
             animator.SetTrigger("Attack2");  
             // Quickly move towards the player during the second attack
-            transform.position = Vector2.MoveTowards(transform.position, new Vector2(targetPlayer.position.x, transform.position.y), secondAttackSpeed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, targetPlayer.position, secondAttackSpeed * Time.deltaTime);
         }
 
         Invoke("EndAttack", 1f);  
@@ -126,7 +120,6 @@ public class BossBehavior : MonoBehaviour
 
         if (health > 0)
         {
-            
             StartCoroutine(FlashRed());
         }
         else
@@ -146,7 +139,6 @@ public class BossBehavior : MonoBehaviour
    
     private void DestroyBoss()
     {
-        
         animator.SetTrigger("Die");
         Destroy(gameObject);
     }
