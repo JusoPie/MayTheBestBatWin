@@ -924,6 +924,54 @@ RectTransform:
   m_AnchoredPosition: {x: -0.03, y: 0.82}
   m_SizeDelta: {x: 39.2197, y: 22.8449}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &855487818
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 855487820}
+  - component: {fileID: 855487819}
+  m_Layer: 0
+  m_Name: Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &855487819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855487818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5fe9ab069168d4299d1eae25d5488d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cloudPrefab: {fileID: 501342157814669521, guid: b3a64cccba765e341b785c2dc76e5311, type: 3}
+  spawnInterval: 8
+  minY: -5
+  maxY: 5
+--- !u!4 &855487820
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855487818}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 26.7, y: -0.006290436, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &922458506
 GameObject:
   m_ObjectHideFlags: 0
@@ -2119,13 +2167,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3970349978239927490, guid: b3a64cccba765e341b785c2dc76e5311, type: 3}
+      propertyPath: resetPositionX
+      value: -33
+      objectReference: {fileID: 0}
+    - target: {fileID: -3970349978239927490, guid: b3a64cccba765e341b785c2dc76e5311, type: 3}
+      propertyPath: startPositionX
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 501342157814669521, guid: b3a64cccba765e341b785c2dc76e5311, type: 3}
       propertyPath: m_Name
       value: Cloud_1
       objectReference: {fileID: 0}
     - target: {fileID: 4198116258587141249, guid: b3a64cccba765e341b785c2dc76e5311, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.730198
+      value: 24.6
       objectReference: {fileID: 0}
     - target: {fileID: 4198116258587141249, guid: b3a64cccba765e341b785c2dc76e5311, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2188,3 +2244,4 @@ SceneRoots:
   - {fileID: 1363036295}
   - {fileID: 1868058895}
   - {fileID: 1044807174503096806}
+  - {fileID: 855487820}
