@@ -14,13 +14,17 @@ public class BossBehavior : MonoBehaviour
 
     private Transform targetPlayer;  // Current target player
     private Animator animator;
-    private bool isAttacking = false;  
+    private bool isAttacking = false;
+    private Vector3 initialScale;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         targetPlayer = GetClosestPlayer();  // Initialize with closest player
+        initialScale = transform.localScale;
+
+        animator.SetTrigger("Prepare");
     }
 
     private void Update()
@@ -34,7 +38,12 @@ public class BossBehavior : MonoBehaviour
         // Move towards the closest player if not attacking
         if (!isAttacking)
         {
+            animator.SetBool("isWalking", true);
             MoveTowardsTarget();
+        }
+        else 
+        {
+            animator.SetBool("isWalking", false);
         }
 
         // Check target player
@@ -67,15 +76,16 @@ public class BossBehavior : MonoBehaviour
         
         if (targetPlayer.position.x > transform.position.x)
         {
-            transform.localScale = new Vector3(1, 1, 1);  
+            transform.localScale = new Vector3(initialScale.x, initialScale.y, initialScale.z);  
         }
         else
         {
-            transform.localScale = new Vector3(-1, 1, 1); 
+            transform.localScale = new Vector3(-initialScale.x, initialScale.y, initialScale.z); 
         }
 
         // Move towards the target player
         transform.position = Vector2.MoveTowards(transform.position, new Vector2(targetPlayer.position.x, transform.position.y), speed * Time.deltaTime);
+        
     }
 
     
