@@ -116,7 +116,16 @@ public class PlayerMovement : MonoBehaviour
                 {
                     enemyHealth.TakeDamage(attackDamage, transform.position);
                 }
+
+                // Check if the hit object has a BossBehaviour component (for boss)
+                BossBehavior boss = hit.collider.GetComponent<BossBehavior>();
+                if (boss != null)
+                {
+                    boss.TakeDamage(attackDamage);
+                }
             }
+
+            
 
             // Start cooldown coroutine
             StartCoroutine(AttackCooldown());

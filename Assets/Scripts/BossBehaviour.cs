@@ -6,7 +6,10 @@ public class BossBehavior : MonoBehaviour
     public float moveSpeed = 2f;        // Speed of the boss movement
     public float attackRange = 2f;      // Distance at which boss will attack
     public float raycastRange = 5f;     // Distance the raycast checks for the player
-    public float attackCooldown = 2f;   // Time between attacks
+    public float attackCooldown = 2f;
+    private int maxhealth = 200;
+    private int currentHealth = 200;
+    public LayerMask playerLayer;       // Optional: Layer mask for the player
 
     private Transform player;
     private Rigidbody2D rb;
@@ -20,7 +23,9 @@ public class BossBehavior : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player").transform; 
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        originalScale = transform.localScale;
+        currentHealth = maxhealth;
     }
 
     void Update()
@@ -30,12 +35,19 @@ public class BossBehavior : MonoBehaviour
             MoveTowardsPlayer();
 
             // Check for attack using raycast
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, GetDirectionToPlayer(), raycastRange);
-            if (hit.collider != null && hit.collider.CompareTag("Player") && Vector2.Distance(transform.position, player.position) <= attackRange)
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, GetDirectionToPlayer(), raycastRange, playerLayer);
+            Debug.DrawRay(transform.position, GetDirectionToPlayer() * raycastRange, Color.green); // Visual debug
+
+            if (hit.collider != null)
             {
-                if (canAttack)
+                Debug.Log("Raycast hit: " + hit.collider.name); // Debug log to check hit object
+
+                if (hit.collider.CompareTag("Player") && Vector2.Distance(transform.position, player.position) <= attackRange)
                 {
-                    StartCoroutine(Attack());
+                    if (canAttack)
+                    {
+                        StartCoroutine(Attack());
+                    }
                 }
             }
         }
@@ -46,12 +58,13 @@ public class BossBehavior : MonoBehaviour
     {
         Vector2 direction = GetDirectionToPlayer();
         rb.velocity = new Vector2(direction.x * moveSpeed, rb.velocity.y);
+        animator.SetBool("isWalking", true);
 
         // Flip the sprite depending on player's position
         if (direction.x > 0)
-            transform.localScale = new Vector3(originalScale.x, originalScale.y, originalScale.z); // Facing right
+            transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z); // Facing right
         else if (direction.x < 0)
-            transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z); // Facing left
+            transform.localScale = new Vector3(originalScale.x, originalScale.y, originalScale.z); // Facing left
     }
 
     // Get direction towards the player
@@ -67,12 +80,13 @@ public class BossBehavior : MonoBehaviour
         canAttack = false;
 
         // Trigger attack animation
-        animator.SetTrigger("Attack");
+        animator.SetTrigger("Attack1");
+        Debug.Log("Attack triggered");
 
         // You can add logic here for dealing damage if in range
 
         // Wait for the attack animation to complete (you may need to adjust this based on your animation length)
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
         isAttacking = false;
 
@@ -81,10 +95,32 @@ public class BossBehavior : MonoBehaviour
         canAttack = true;
     }
 
-    // Debugging the raycast in the Scene view
+    public void TakeDamage(int damage)
+    {
+            currentHealth -= damage;
+            SoundManager.instance.PlaySFX(0);
+
+            if (currentHealth <= 0)
+            {
+                Debug.Log("bossi kuoli");
+                Die();
+            }
+    }
+
+    public void Die() 
+    {
+        Destroy(gameObject);
+    }
+
+
+
+     // Debugging the raycast in the Scene view
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + (Vector3)GetDirectionToPlayer() * raycastRange);
+        if (player != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, player.position);
+        }
     }
 }
