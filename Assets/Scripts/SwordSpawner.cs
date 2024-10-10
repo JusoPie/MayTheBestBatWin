@@ -5,8 +5,8 @@ using UnityEngine;
 public class SwordSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject swordPrefab;  
-    [SerializeField] private float spawnInterval = 2f; 
-    [SerializeField] private float xOffset = 2f;      // How far off-screen the spawners are from the camera
+    [SerializeField] private float spawnInterval = 1f; 
+    [SerializeField] private float xOffset = 2f;  // How far off-screen the spawners are from the camera
     [SerializeField] private Vector2 spawnYRange = new Vector2(-3f, 3f);  // Random Y position range for swords reative to camera
 
     private Camera mainCamera;
@@ -50,5 +50,31 @@ public class SwordSpawner : MonoBehaviour
                 swordMovement.speed = spawnFromLeft ? Mathf.Abs(swordMovement.speed) : -Mathf.Abs(swordMovement.speed);
             }
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player")) 
+        {
+            StartSwordBurst();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            EndSwordBurst();
+        }
+    }
+
+    private void StartSwordBurst() 
+    {
+        spawnInterval = 0.15f;
+    }
+
+    private void EndSwordBurst() 
+    {
+        spawnInterval = 1f;
     }
 }
