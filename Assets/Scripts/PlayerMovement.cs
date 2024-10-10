@@ -79,6 +79,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _rb.velocity = new Vector2(_rb.velocity.x, jumpingPower);
             animator.SetTrigger("Jump");
+            SoundManager.instance.PlaySFX(1);
         }
 
         if (context.canceled && _rb.velocity.y > 0f && canMove)
@@ -101,8 +102,8 @@ public class PlayerMovement : MonoBehaviour
 
             _rb.bodyType = RigidbodyType2D.Kinematic;
             _rb.velocity = Vector2.zero;
-
             animator.SetTrigger("Attack");
+            SoundManager.instance.PlaySFX(7);
 
             // Cast raycast in the direction the player is facing
             RaycastHit2D hit = Physics2D.Raycast(transform.position, isFacingright ? Vector2.right : Vector2.left, attackRange, enemyLayer);

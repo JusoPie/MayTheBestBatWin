@@ -31,6 +31,7 @@ public class RandomPlatform : MonoBehaviour
                 case 0:
                     // Disable the platform's collider
                     DisableCollider();
+                    SoundManager.instance.PlaySFX(4);
                     break;
                 case 1:
                     // Teleport platform left
@@ -51,6 +52,7 @@ public class RandomPlatform : MonoBehaviour
                 case 5:
                     // Rotate platform on Z-axis
                     StartRotating();
+                    SoundManager.instance.PlaySFX(5);
                     break;
                 case 6:
                     // Do nothing
@@ -58,6 +60,7 @@ public class RandomPlatform : MonoBehaviour
                     break;
                 case 7:
                     InstantiateObjectOnPlatform();
+                    SoundManager.instance.PlaySFX(6);
                     Debug.Log("No action taken");
                     break;
             }
