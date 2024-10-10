@@ -74,6 +74,11 @@ public class GameManager : MonoBehaviour
     Application.Quit();
     }
 
+    public void LoadEndScene() 
+    {
+        SceneManager.LoadScene("EndScene");
+    }
+
     public void Resume()
     {
         pauseMenuUI.SetActive(false);  // Hide pause menu

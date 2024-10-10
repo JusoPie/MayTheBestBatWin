@@ -9,7 +9,6 @@ public class BossBehavior : MonoBehaviour
     public float attackCooldown = 2f;
     private int maxhealth = 200;
     private int currentHealth = 200;
-    public LayerMask playerLayer;       // Optional: Layer mask for the player
 
     private Transform player;
     private Rigidbody2D rb;
@@ -19,6 +18,8 @@ public class BossBehavior : MonoBehaviour
 
     private Vector3 originalScale;
 
+    public GameManager gm;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -26,6 +27,7 @@ public class BossBehavior : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         originalScale = transform.localScale;
         currentHealth = maxhealth;
+        
     }
 
     void Update()
@@ -35,7 +37,7 @@ public class BossBehavior : MonoBehaviour
             MoveTowardsPlayer();
 
             // Check for attack using raycast
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, GetDirectionToPlayer(), raycastRange, playerLayer);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, GetDirectionToPlayer(), raycastRange);
             Debug.DrawRay(transform.position, GetDirectionToPlayer() * raycastRange, Color.green); // Visual debug
 
             if (hit.collider != null)
@@ -109,6 +111,7 @@ public class BossBehavior : MonoBehaviour
 
     public void Die() 
     {
+        gm.LoadEndScene();
         Destroy(gameObject);
     }
 

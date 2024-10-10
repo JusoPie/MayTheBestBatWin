@@ -49,9 +49,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
-  attackRange: 3
-  raycastRange: 10
+  attackRange: 1
+  raycastRange: 2.1
   attackCooldown: 2
+  gm: {fileID: 0}
 --- !u!212 &2959551688322827590
 SpriteRenderer:
   m_ObjectHideFlags: 0
