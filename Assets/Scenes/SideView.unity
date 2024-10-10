@@ -1238,7 +1238,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 46652682612971515, guid: 7d1559b8fafa77f4cac0cdb1a96e0aa0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 252600632567155881, guid: 7d1559b8fafa77f4cac0cdb1a96e0aa0, type: 3}
       propertyPath: m_Colors.m_NormalColor.b
@@ -1266,7 +1266,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 237240f6b72ac8b49ab24d9ee4816445, type: 3}
     - target: {fileID: 1429767784956460713, guid: 7d1559b8fafa77f4cac0cdb1a96e0aa0, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1667652031758987922, guid: 7d1559b8fafa77f4cac0cdb1a96e0aa0, type: 3}
       propertyPath: m_Colors.m_NormalColor.b
@@ -1322,7 +1322,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4792433340774180737, guid: 7d1559b8fafa77f4cac0cdb1a96e0aa0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5123975283203146139, guid: 7d1559b8fafa77f4cac0cdb1a96e0aa0, type: 3}
       propertyPath: m_Colors.m_NormalColor.b
@@ -1490,7 +1490,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6023579631410123588, guid: 7d1559b8fafa77f4cac0cdb1a96e0aa0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7020849123511186831, guid: 7d1559b8fafa77f4cac0cdb1a96e0aa0, type: 3}
       propertyPath: m_Color.a
@@ -1542,7 +1542,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7452359629156148170, guid: 7d1559b8fafa77f4cac0cdb1a96e0aa0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8470196501356739545, guid: 7d1559b8fafa77f4cac0cdb1a96e0aa0, type: 3}
       propertyPath: m_UiScaleMode
@@ -1790,8 +1790,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Music
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 345ead32f5131264888e4df461da2de5, type: 2}
+  m_sharedMaterial: {fileID: -3043184891845330278, guid: 345ead32f5131264888e4df461da2de5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3575,8 +3575,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: SFX
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 345ead32f5131264888e4df461da2de5, type: 2}
+  m_sharedMaterial: {fileID: -3043184891845330278, guid: 345ead32f5131264888e4df461da2de5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
