@@ -18,13 +18,14 @@ public class BossBehavior : MonoBehaviour
 
     private Vector3 originalScale;
 
-    public GameManager gm;
+    private GameManager gameManager;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         originalScale = transform.localScale;
         currentHealth = maxhealth;
         
@@ -111,7 +112,7 @@ public class BossBehavior : MonoBehaviour
 
     public void Die() 
     {
-        gm.LoadEndScene();
+        gameManager.LoadEndScene();
         Destroy(gameObject);
     }
 
