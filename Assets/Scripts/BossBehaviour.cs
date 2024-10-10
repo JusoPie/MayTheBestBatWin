@@ -3,151 +3,88 @@ using System.Collections;
 
 public class BossBehavior : MonoBehaviour
 {
-    [SerializeField] private Transform player1;
-    [SerializeField] private Transform player2;
-    [SerializeField] private float speed = 2f;
-    [SerializeField] private float attackRange = 1.5f;  
-    [SerializeField] private float secondAttackSpeed = 5f; 
+    public float moveSpeed = 2f;        // Speed of the boss movement
+    public float attackRange = 2f;      // Distance at which boss will attack
+    public float raycastRange = 5f;     // Distance the raycast checks for the player
+    public float attackCooldown = 2f;   // Time between attacks
 
-    [SerializeField] private int health = 100;   
-    private SpriteRenderer spriteRenderer;  
-
-    private Transform targetPlayer;  // Current target player
+    private Transform player;
+    private Rigidbody2D rb;
     private Animator animator;
     private bool isAttacking = false;
-    private Vector3 initialScale;
+    private bool canAttack = true;
 
-    private void Start()
+    private Vector3 originalScale;
+
+    void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        targetPlayer = GetClosestPlayer();  // Initialize with closest player
-        initialScale = transform.localScale;
-
-        animator.SetTrigger("Prepare");
+        player = GameObject.FindGameObjectWithTag("Player").transform; 
     }
 
-    private void Update()
+    void Update()
     {
-        if (health <= 0)
+        if (player != null && !isAttacking)
         {
-            DestroyBoss();
-            return;
-        }
+            MoveTowardsPlayer();
 
-        // Move towards the closest player if not attacking
-        if (!isAttacking)
-        {
-            animator.SetBool("isWalking", true);
-            MoveTowardsTarget();
-        }
-        else 
-        {
-            animator.SetBool("isWalking", false);
-        }
-
-        // Check target player
-        Transform closestPlayer = GetClosestPlayer();
-        if (targetPlayer != closestPlayer)
-        {
-            targetPlayer = closestPlayer;
-        }
-
-        // Check for attack range
-        float distanceToTarget = Mathf.Abs(transform.position.x - targetPlayer.position.x);
-        if (distanceToTarget <= attackRange)
-        {
-            Attack();
+            // Check for attack using raycast
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, GetDirectionToPlayer(), raycastRange);
+            if (hit.collider != null && hit.collider.CompareTag("Player") && Vector2.Distance(transform.position, player.position) <= attackRange)
+            {
+                if (canAttack)
+                {
+                    StartCoroutine(Attack());
+                }
+            }
         }
     }
 
-    // Get the closest player between player1 and player2
-    private Transform GetClosestPlayer()
+    // Move towards the player
+    void MoveTowardsPlayer()
     {
-        float distanceToPlayer1 = Vector2.Distance(transform.position, player1.position);
-        float distanceToPlayer2 = Vector2.Distance(transform.position, player2.position);
+        Vector2 direction = GetDirectionToPlayer();
+        rb.velocity = new Vector2(direction.x * moveSpeed, rb.velocity.y);
 
-        return distanceToPlayer1 < distanceToPlayer2 ? player1 : player2;
+        // Flip the sprite depending on player's position
+        if (direction.x > 0)
+            transform.localScale = new Vector3(originalScale.x, originalScale.y, originalScale.z); // Facing right
+        else if (direction.x < 0)
+            transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z); // Facing left
     }
 
-    // Move the boss towards the target player
-    private void MoveTowardsTarget()
+    // Get direction towards the player
+    Vector2 GetDirectionToPlayer()
     {
-        
-        if (targetPlayer.position.x > transform.position.x)
-        {
-            transform.localScale = new Vector3(initialScale.x, initialScale.y, initialScale.z);  
-        }
-        else
-        {
-            transform.localScale = new Vector3(-initialScale.x, initialScale.y, initialScale.z); 
-        }
-
-        // Move towards the target player
-        transform.position = Vector2.MoveTowards(transform.position, new Vector2(targetPlayer.position.x, transform.position.y), speed * Time.deltaTime);
-        
+        return (player.position - transform.position).normalized;
     }
 
-    
-    private void Attack()
+    // Attack the player
+    IEnumerator Attack()
     {
-        if (isAttacking) return;
-
         isAttacking = true;
-        animator.SetTrigger("Attack1");  
-        Invoke("PerformSecondAttack", 1f);  
-    }
+        canAttack = false;
 
-    // Perform second attack
-    private void PerformSecondAttack()
-    {
-        // If still in range after the first attack, perform the second attack
-        float distanceToTarget = Mathf.Abs(transform.position.x - targetPlayer.position.x);
-        if (distanceToTarget <= attackRange)
-        {
-            animator.SetTrigger("Attack2");  
-            // Quickly move towards the player during the second attack
-            transform.position = Vector2.MoveTowards(transform.position, new Vector2(targetPlayer.position.x, transform.position.y), secondAttackSpeed * Time.deltaTime);
-        }
+        // Trigger attack animation
+        animator.SetTrigger("Attack");
 
-        Invoke("EndAttack", 1f);  
-    }
+        // You can add logic here for dealing damage if in range
 
-    // End attack logic
-    private void EndAttack()
-    {
+        // Wait for the attack animation to complete (you may need to adjust this based on your animation length)
+        yield return new WaitForSeconds(0.5f);
+
         isAttacking = false;
+
+        // Cooldown between attacks
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
     }
 
-    
-    public void TakeDamage(int damage)
+    // Debugging the raycast in the Scene view
+    void OnDrawGizmosSelected()
     {
-        health -= damage;
-
-        if (health > 0)
-        {
-            
-            StartCoroutine(FlashRed());
-        }
-        else
-        {
-            DestroyBoss();
-        }
-    }
-
-    // Flash red when damaged
-    private IEnumerator FlashRed()
-    {
-        spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(0.1f);  
-        spriteRenderer.color = Color.white;  
-    }
-
-   
-    private void DestroyBoss()
-    {
-        
-        animator.SetTrigger("Die");
-        Destroy(gameObject);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + (Vector3)GetDirectionToPlayer() * raycastRange);
     }
 }
