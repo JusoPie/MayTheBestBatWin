@@ -5,16 +5,17 @@ using UnityEngine;
 public class RandomPlatform : MonoBehaviour
 {
     private BoxCollider2D platformCollider;
-    private Vector3 initialPosition; 
-    public float teleportDistance = 2f;  
-    [SerializeField] private float rotationSpeed = 90f; 
+    private Vector3 initialPosition;
+    public float teleportDistance = 2f;
+    [SerializeField] private float rotationSpeed = 90f;
     private bool isRotating = false;
+    [SerializeField] GameObject batPowder;
 
     void Start()
     {
-        
+
         platformCollider = GetComponent<BoxCollider2D>();
-        
+
         initialPosition = transform.position;
     }
 
@@ -22,8 +23,8 @@ public class RandomPlatform : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            
-            int randomAction = Random.Range(0, 7);
+
+            int randomAction = Random.Range(0, 8);
 
             switch (randomAction)
             {
@@ -55,6 +56,10 @@ public class RandomPlatform : MonoBehaviour
                     // Do nothing
                     Debug.Log("No action taken");
                     break;
+                case 7:
+                    InstantiateObjectOnPlatform();
+                    Debug.Log("No action taken");
+                    break;
             }
         }
     }
@@ -64,7 +69,7 @@ public class RandomPlatform : MonoBehaviour
         platformCollider.enabled = false;
         Debug.Log("Platform collider disabled");
 
-        
+
         StartCoroutine(ReenableCollider());
     }
 
@@ -76,7 +81,7 @@ public class RandomPlatform : MonoBehaviour
 
     private void TeleportPlatform(Vector2 direction)
     {
-        
+
         Vector3 teleportPosition = initialPosition + (Vector3)direction * teleportDistance;
         transform.position = teleportPosition;
     }
@@ -92,7 +97,7 @@ public class RandomPlatform : MonoBehaviour
     private IEnumerator RotatePlatform()
     {
         isRotating = true;
-        float rotationTime = 2f;  
+        float rotationTime = 2f;
         float elapsedTime = 0f;
 
         while (elapsedTime < rotationTime)
@@ -104,6 +109,16 @@ public class RandomPlatform : MonoBehaviour
         }
 
         isRotating = false;
+    }
+
+    private void InstantiateObjectOnPlatform()
+    {
+        if (batPowder != null)
+        {
+            Vector3 instantiatePosition = transform.position + new Vector3(0, transform.position.y+1 / 2, 0);
+
+            Instantiate(batPowder, instantiatePosition, Quaternion.identity);
+        }
     }
 }
 
