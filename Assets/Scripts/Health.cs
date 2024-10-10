@@ -41,6 +41,7 @@ public class Health : MonoBehaviour
             playerMovement.enabled = false;
             animator.SetTrigger("Damage");
             StartCoroutine(KnockbackTimer());
+            SoundManager.instance.PlaySFX(3);
 
             // Apply pushback force
             ApplyPushback(damageSourcePosition);
@@ -67,6 +68,7 @@ public class Health : MonoBehaviour
     private void Die()
     {
         // Disable player movement
+        SoundManager.instance.PlaySFX(2);
         playerMovement.enabled = false;
         playerMovement.isDead = true;
         canTakeDamage = false;
