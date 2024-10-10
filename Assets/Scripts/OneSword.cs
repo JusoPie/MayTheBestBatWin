@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OneSword : MonoBehaviour
 {
-    [SerializeField] private float speed = 5f;  // Speed of the sword's movement on the x-axis
+    public float speed = 5f;  // Speed of the sword's movement on the x-axis
     [SerializeField] private int damage = 20;   // Amount of damage the sword deals
 
     // Update is called once per frame

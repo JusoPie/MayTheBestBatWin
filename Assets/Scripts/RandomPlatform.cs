@@ -115,7 +115,7 @@ public class RandomPlatform : MonoBehaviour
     {
         if (batPowder != null)
         {
-            Vector3 instantiatePosition = transform.position + new Vector3(0, transform.position.y+1 / 2, 0);
+            Vector3 instantiatePosition = transform.position + new Vector3(0, platformCollider.bounds.size.y / 2, 0);
 
             Instantiate(batPowder, instantiatePosition, Quaternion.identity);
         }
