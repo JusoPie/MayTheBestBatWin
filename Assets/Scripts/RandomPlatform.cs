@@ -36,18 +36,22 @@ public class RandomPlatform : MonoBehaviour
                 case 1:
                     // Teleport platform left
                     TeleportPlatform(Vector2.left);
+                    SoundManager.instance.PlaySFX(8);
                     break;
                 case 2:
                     // Teleport platform right
                     TeleportPlatform(Vector2.right);
+                    SoundManager.instance.PlaySFX(8);
                     break;
                 case 3:
                     // Teleport platform up
                     TeleportPlatform(Vector2.up);
+                    SoundManager.instance.PlaySFX(8);
                     break;
                 case 4:
                     // Teleport platform down
                     TeleportPlatform(Vector2.down);
+                    SoundManager.instance.PlaySFX(8);
                     break;
                 case 5:
                     // Rotate platform on Z-axis
