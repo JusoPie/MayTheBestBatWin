@@ -11,56 +11,62 @@ public class GameManager : MonoBehaviour
     public GameObject pauseMenuUI; // Assign the pause panel from the Unity Inspector
     public static GameManager instance;
     public AudioSource backgroundMusic;
+    public AudioSource soundEffects;
     public Slider volumeSlider;
+    public Slider sfxSlider;
     private bool isPaused = false;
 
     // Start is called before the first frame update
 
-    void Awake()
-    {
-
-    }
-
     void Start()
     {
-        float savedVolume = PlayerPrefs.GetFloat("musicVolume", 1f);
-        SetVolume(savedVolume);
+        // Load saved volume levels
+        float savedMusicVolume = PlayerPrefs.GetFloat("musicVolume", 1f);
+        float savedSfxVolume = PlayerPrefs.GetFloat("sfxVolume", 1f);
 
-        Slider[] sliders = FindObjectsOfType<Slider>();
-        foreach (Slider slider in sliders)
+        // Set initial volume levels
+        SetMusicVolume(savedMusicVolume);
+        SetSfxVolume(savedSfxVolume);
+
+        // Set slider values to match saved volume levels
+        if (volumeSlider != null)
         {
-            slider.value = savedVolume; // Set each slider to the saved volume
-            slider.onValueChanged.AddListener(SetVolume); // Ensure each slider updates volume
+            volumeSlider.value = savedMusicVolume;
+            volumeSlider.onValueChanged.AddListener(SetMusicVolume);
         }
 
-        if (backgroundMusic != null && volumeSlider != null)
+        if (sfxSlider != null)
         {
-            volumeSlider.value = backgroundMusic.volume; // Match slider to current volume
-            volumeSlider.onValueChanged.AddListener(SetVolume); // Add listener to handle slider changes
+            sfxSlider.value = savedSfxVolume;
+            sfxSlider.onValueChanged.AddListener(SetSfxVolume);
         }
-
     }
 
-    // Update is called once per frame
+
+
+// Update is called once per frame
     void Update()
     {
-        if (SceneManager.GetActiveScene().name != "MenuScene") // Replace "MenuScene" with your actual menu scene name
+    // Check if the current scene is NOT the menu scene before allowing the Escape key to pause the game
+    if (SceneManager.GetActiveScene().name != "MenuScene")
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (isPaused)
             {
-                if (isPaused)
-                {
-                    Resume();
-                }
-                else
-                {
-                    Pause();
-                }
+                Resume();
+            }
+            else
+            {
+                Pause();
             }
         }
     }
+    }
 
-    public void StartGame() {
+    public void StartGame() 
+
+    {
         SceneManager.LoadScene("SideView");
     }
 
@@ -88,13 +94,30 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene
     }
 
-    public void SetVolume(float volume)
+    public void SetMusicVolume(float volume)
     {
-        if (backgroundMusic != null)
-        {
-            backgroundMusic.volume = volume; // Set the volume on the AudioSource
-        }
-        PlayerPrefs.SetFloat("musicVolume", volume); // Save the volume setting
-        PlayerPrefs.Save(); // Ensure the data is saved
+    if (backgroundMusic != null)
+    {
+        backgroundMusic.volume = volume;
     }
+    PlayerPrefs.SetFloat("musicVolume", volume);
+    PlayerPrefs.Save();
+    }
+
+    public void SetSfxVolume(float volume)
+    {
+    if (soundEffects != null)
+    {
+        soundEffects.volume = volume;
+    }
+    PlayerPrefs.SetFloat("sfxVolume", volume);
+    PlayerPrefs.Save();
+    }
+
+    public void BackToMenu()
+
+    {
+        SceneManager.LoadScene("MenuScene");
+    }
+
 }
