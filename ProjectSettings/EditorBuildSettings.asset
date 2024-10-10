@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SideView.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/EndScene.unity
+    guid: be46dfb1ad9920c47a4c283817d9530b
+  - enabled: 1
+    path: Assets/Scenes/MenuScene.unity
+    guid: 1c96e9f8eea95bd49b5dbeafc80728df
   m_configObjects: {}
