@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     public GameObject pauseMenuUI; // Assign the pause panel from the Unity Inspector
     public static GameManager instance;
     public AudioSource backgroundMusic;
+    public AudioSource soundEffects;
+    public Slider sfxSlider;
     public Slider volumeSlider;
     private bool isPaused = false;
 
@@ -23,22 +25,26 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        float savedVolume = PlayerPrefs.GetFloat("musicVolume", 1f);
-        SetVolume(savedVolume);
+        // Load saved volume levels
+        float savedMusicVolume = PlayerPrefs.GetFloat("musicVolume", 1f);
+        float savedSfxVolume = PlayerPrefs.GetFloat("sfxVolume", 1f);
 
-        Slider[] sliders = FindObjectsOfType<Slider>();
-        foreach (Slider slider in sliders)
+        // Set initial volume levels
+        SetMusicVolume(savedMusicVolume);
+        SetSfxVolume(savedSfxVolume);
+
+        // Set slider values to match saved volume levels
+        if (volumeSlider != null)
         {
-            slider.value = savedVolume; // Set each slider to the saved volume
-            slider.onValueChanged.AddListener(SetVolume); // Ensure each slider updates volume
+            volumeSlider.value = savedMusicVolume;
+            volumeSlider.onValueChanged.AddListener(SetMusicVolume);
         }
 
-        if (backgroundMusic != null && volumeSlider != null)
+        if (sfxSlider != null)
         {
-            volumeSlider.value = backgroundMusic.volume; // Match slider to current volume
-            volumeSlider.onValueChanged.AddListener(SetVolume); // Add listener to handle slider changes
+            sfxSlider.value = savedSfxVolume;
+            sfxSlider.onValueChanged.AddListener(SetSfxVolume);
         }
-
     }
 
     // Update is called once per frame
@@ -88,13 +94,25 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene
     }
 
-    public void SetVolume(float volume)
+    public void SetMusicVolume(float volume)
     {
         if (backgroundMusic != null)
         {
-            backgroundMusic.volume = volume; // Set the volume on the AudioSource
+            backgroundMusic.volume = volume;
         }
-        PlayerPrefs.SetFloat("musicVolume", volume); // Save the volume setting
-        PlayerPrefs.Save(); // Ensure the data is saved
+        PlayerPrefs.SetFloat("musicVolume", volume);
+        PlayerPrefs.Save();
     }
+
+    public void SetSfxVolume(float volume)
+    {
+        if (soundEffects != null)
+        {
+            soundEffects.volume = volume;
+        }
+        PlayerPrefs.SetFloat("sfxVolume", volume);
+        PlayerPrefs.Save();
+    }
+
+
 }
