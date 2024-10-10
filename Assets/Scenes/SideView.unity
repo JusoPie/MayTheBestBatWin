@@ -2212,7 +2212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 20
   defaultPosition: {x: 3.72, y: -3.5, z: 0}
-  riseDuration: 1
+  riseDuration: 2
   delayBeforeRising: 5
 --- !u!4 &1435508518 stripped
 Transform:
@@ -3267,9 +3267,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sword
       objectReference: {fileID: 0}
+    - target: {fileID: 573545507178733262, guid: d12e51bde68f81841b8097cf79488d97, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 6434028382685533386, guid: d12e51bde68f81841b8097cf79488d97, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.23
+      value: -7.04
       objectReference: {fileID: 0}
     - target: {fileID: 6434028382685533386, guid: d12e51bde68f81841b8097cf79488d97, type: 3}
       propertyPath: m_LocalPosition.y
