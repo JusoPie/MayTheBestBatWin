@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpingPower = 16f;
     [SerializeField] private bool isFacingright = true;
     private Animator animator;
+    private PlayerInput playerInput;
 
     private bool wasGrounded;
     private bool canMove = true; // Control when the player can move
@@ -71,6 +72,18 @@ public class PlayerMovement : MonoBehaviour
 
         // Update wasGrounded
         wasGrounded = isGrounded;
+    }
+
+    private void OnEnable()
+    {
+        playerInput = GetComponent<PlayerInput>();
+        playerInput.actions.Enable();  // Enable input actions
+    }
+
+    private void OnDisable()
+    {
+        playerInput = GetComponent<PlayerInput>();
+        playerInput.actions.Disable(); // Disable input actions
     }
 
     public void Jump(InputAction.CallbackContext context)
