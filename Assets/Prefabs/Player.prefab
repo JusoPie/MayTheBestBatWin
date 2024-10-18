@@ -10,12 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 6065996205337678999}
   - component: {fileID: 3991345641559962218}
+  - component: {fileID: 2747267282034463148}
   - component: {fileID: 7280069219245691384}
   - component: {fileID: 4488688916563565576}
   - component: {fileID: 4516851054239033574}
   - component: {fileID: 591380956818785011}
   - component: {fileID: 53364880260770111}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -59,6 +60,30 @@ MonoBehaviour:
   speed: 8
   jumpingPower: 14
   isFacingright: 1
+  attackCooldown: 0.2
+  attackRange: 0.9
+  attackDamage: 10
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 768
+  isDead: 0
+--- !u!114 &2747267282034463148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2467446479825728740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e58f4608501bc8479b9f016c7e545be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  respawnDelay: 5
+  pushBackForce: 1.5
+  pushbackEffect: 0.5
 --- !u!114 &7280069219245691384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,7 +161,7 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 004c066e-d8ba-4aba-b15c-59d71d3d6a16
     m_ActionName: Player_Map/New action
-  m_NeverAutoSwitchControlSchemes: 0
+  m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Player_Map
   m_SplitScreenIndex: -1
