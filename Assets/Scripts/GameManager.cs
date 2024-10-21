@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SceneManager.GetActiveScene().name != "MenuScene") // Replace "MenuScene" with your actual menu scene name
+        if (SceneManager.GetActiveScene().buildIndex != 0) // Replace "MenuScene" with your actual menu scene name
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void StartGame() {
-        SceneManager.LoadScene("SideView");
+        SceneManager.LoadScene(1);
     }
 
     public void QuitGame() { 
@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadEndScene() 
     {
-        SceneManager.LoadScene("EndScene");
+        SceneManager.LoadScene(2);
     }
 
     public void Resume()
@@ -96,12 +96,12 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1f; // Reset time scale in case it's paused
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reload the current scene
     }
 
     public void BackToMenu()
     {
-        SceneManager.LoadScene("MenuScene");
+        SceneManager.LoadScene(0);
     }
     public void SetMusicVolume(float volume)
     {
