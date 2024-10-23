@@ -15,7 +15,7 @@ public class BatPowder : MonoBehaviour
             if (playerHealth != null)
             {
                 // Deal damage over time
-                playerHealth.TakeDamage(damagePerSecond, transform.position);
+                playerHealth.TakeDamageFromBatPowder(damagePerSecond, transform.position);
             }
         }
     }

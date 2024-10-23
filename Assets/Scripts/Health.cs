@@ -19,6 +19,10 @@ public class Health : MonoBehaviour
 
     private bool canTakeDamage = true;
 
+    private float soundCooldown = 1.0f;  // Time between sound plays
+    private float lastSoundTime = 0f;    // Track when the sound was last played
+
+
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -53,6 +57,37 @@ public class Health : MonoBehaviour
             }
         }
         
+
+    }
+
+    public void TakeDamageFromBatPowder(int damage, Vector2 damageSourcePosition)
+    {
+        if (canTakeDamage)
+        {
+            Debug.Log("damageFromBatPowder");
+            currentHealth -= damage;
+            playerMovement.enabled = false;
+            animator.SetTrigger("Damage");
+            StartCoroutine(KnockbackTimer());
+            
+
+            // Check if the cooldown period has passed before playing the sound
+            if (Time.time >= lastSoundTime + soundCooldown)
+            {
+                SoundManager.instance.PlaySFX(3);
+                lastSoundTime = Time.time;  // Update the last sound play time
+            }
+
+            // Apply pushback force
+            ApplyPushback(damageSourcePosition);
+
+            if (currentHealth <= 0)
+            {
+                Debug.Log("kuolin");
+                Die();
+            }
+        }
+
 
     }
 

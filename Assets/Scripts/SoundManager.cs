@@ -33,10 +33,11 @@ public class SoundManager : MonoBehaviour
     }
 
     // Method to play a specific sound effect by index (0 to 9)
-    public void PlaySFX(int index)
+    public void PlaySFX(int index, float pitch = 1.0f)
     {
         if (index >= 0 && index < soundEffects.Length && soundEffects[index] != null)
         {
+            sfxSource.pitch = pitch; // set the pitch
             sfxSource.PlayOneShot(soundEffects[index], sfxVolume);
         }
         else
